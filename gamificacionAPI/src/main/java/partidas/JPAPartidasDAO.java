@@ -35,25 +35,23 @@ public class JPAPartidasDAO implements PartidasDAO {
 	}
 
 	@Override
-	public boolean guardar(Partida cp) {
+	public boolean guardar(Partida p) {
 		boolean done = true;
 		
-		Partida configuracion = em.find(Partida.class, cp.getId_partida());
+		String jpql = "select max(p.id_partida) from Partida p ";
+		Query query = em.createQuery(jpql);
+		List<Integer> lids = query.getResultList();
+		int lastId = lids.get(lids.size()-1);
+		p.setId_partida(lastId+1);
 		
-		
-		if(configuracion == null) {
-				tx.begin();
-				try {
-					em.persist(cp);
-					tx.commit();
-			
-			}catch(Exception e) {
-				done = false;
-				tx.rollback();
-			}
-
-		}else {
+		tx.begin();
+		try {
+			em.persist(p);
+			tx.commit();
+	
+		}catch(Exception e) {
 			done = false;
+			tx.rollback();
 		}
 		
 		return done;

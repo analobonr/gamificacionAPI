@@ -25,6 +25,7 @@ public class ConfPartida {
 	private String curso;
 	private String asignatura;
 	private String tema;
+	private int tiemporespuesta;
 	
 	
 	public ConfPartida() {
@@ -161,6 +162,17 @@ public class ConfPartida {
 		this.tema = tema;
 	}
 	
+	public int getTiemporespuesta() {
+		return tiemporespuesta;
+	}
+
+
+	public void setTiemporespuesta(int tiemporespuesta) {
+		this.tiemporespuesta = tiemporespuesta;
+	}
+	
+	
+	//Actualiza la fecha de creacion con la fecha actual
 	public void registrarFecha() {
 		Calendar fecha  = Calendar.getInstance();
 		int year = fecha.get(Calendar.YEAR);
@@ -168,6 +180,9 @@ public class ConfPartida {
 		int day = fecha.get(Calendar.DAY_OF_MONTH);
 		this.fecha_creacion = Date.valueOf(year+"-"+month+"-"+day);
 	}
+
+
+	
 
 	
 

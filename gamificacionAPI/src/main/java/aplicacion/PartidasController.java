@@ -50,11 +50,12 @@ public class PartidasController {
 	   }
 	
 	@PostMapping
-    public Estado registro(@RequestBody Partida j) throws Exception {
+    public Estado registro(@RequestBody Partida partida) throws Exception {
     	
-		
+		//Actualizamos las fechas de inicio y update
+		partida.registrarFecha(true);		
     	
-    	return new Estado(partidaDao.guardar(j));
+    	return new Estado(partidaDao.guardar(partida));
     	
     }
 	
