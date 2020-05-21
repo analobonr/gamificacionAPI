@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import confPartidas.ConfPartida;
 import confPartidas.ConfPartidasDAO;
 import confPartidas.JPAConfPartidasDAO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import profesores.JPAProfesorDao;
 import profesores.ProfesorDao;
 
@@ -23,12 +25,14 @@ import profesores.ProfesorDao;
 
 @RestController
 @RequestMapping("/confPartidas")
+@Api(tags = "Plantillas")
 public class ConfPartidasController {
 	
 	private ConfPartidasDAO cpDao = new JPAConfPartidasDAO();
 	
+	@ApiOperation(value = "Obtener una configuración de partida a partir de su identificador")
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
-    public ConfPartida insetar(@PathVariable("id") int id) throws Exception {
+    public ConfPartida insertar(@PathVariable("id") int id) throws Exception {
 	   
 	   return cpDao.buscar(id);
     	

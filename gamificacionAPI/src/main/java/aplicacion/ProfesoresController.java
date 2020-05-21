@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import profesores.JPAProfesorDao;
 import profesores.Profesor;
 import profesores.ProfesorDao;
 
 @RestController
 @RequestMapping("/usuarios")
+@Api(tags = "Usuarios")
 public class ProfesoresController {
-
-    
 
    @RequestMapping(value="/{login}/{password}",method=RequestMethod.GET)
     public Profesor login(@PathVariable("login") String login, @PathVariable("password") String password ) throws Exception {
@@ -63,7 +63,7 @@ public class ProfesoresController {
     	
     }
   
-    
+    @ApiOperation(value = "Eliminar un usuario por su email de login")
     @RequestMapping(value="/{login}",method=RequestMethod.DELETE)
     public Estado eliminarID(@PathVariable("login") String login) throws Exception {
     	ProfesorDao pDao = new JPAProfesorDao();
@@ -72,6 +72,8 @@ public class ProfesoresController {
     	
     }
     
+    
+    @ApiOperation(value = "Eliminar una lista de usuarios por su identificador")
     @RequestMapping(method=RequestMethod.DELETE)
     public Estado eliminarLista(@RequestBody List<Integer> ids) throws Exception {
     	ProfesorDao pDao = new JPAProfesorDao();
