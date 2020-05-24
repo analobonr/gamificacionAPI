@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,8 +13,9 @@ import javax.persistence.Table;
 @Table(name="configuracion_partidas")
 public class ConfPartida {
 	
-	@Id
-	private int id_configuracion;
+	@Id 
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id_configuracion;
 	private int id_profesor;
 	private int id_juego;
 	private int id_fpreguntas;
@@ -33,12 +36,12 @@ public class ConfPartida {
 	}
 
 
-	public int getId_configuracion() {
+	public Integer getId_configuracion() {
 		return id_configuracion;
 	}
 
 
-	public void setId_configuracion(int id_configuracion) {
+	public void setId_configuracion(Integer id_configuracion) {
 		this.id_configuracion = id_configuracion;
 	}
 

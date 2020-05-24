@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -206,16 +207,13 @@ public class JPAProfesorDao implements ProfesorDao{
 	}
 
 	@Override
-	public Integer buscarId(String mail) {
+	public Integer buscarId(String mail){
+		
 		String jpql = "select p.id from Profesor p where p.email=:email";
 		Query query = em.createQuery(jpql);
 		query.setParameter("email", mail);
-		Integer id = null;
-		try {
-			id = (Integer) query.getSingleResult();
-		}catch(Exception e) {
-			System.err.println(e);
-		}
+		Integer id = (Integer) query.getSingleResult();;
+		
 		return id;
 	}
 

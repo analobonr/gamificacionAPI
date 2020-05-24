@@ -18,80 +18,119 @@ import confPartidas.ConfPartidasDAO;
 import confPartidas.JPAConfPartidasDAO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
 import profesores.JPAProfesorDao;
 import profesores.ProfesorDao;
-
-
+import utilidades.CustomInternalServerErrorException;
 
 @RestController
 @RequestMapping("/confPartidas")
-@Api(tags = "Plantillas")
+@Api(tags = "Configuración de Partidas")
 public class ConfPartidasController {
-	
+
 	private ConfPartidasDAO cpDao = new JPAConfPartidasDAO();
-	
+
+
 	@ApiOperation(value = "Obtener una configuración de partida a partir de su identificador")
-	@RequestMapping(value="/{id}",method=RequestMethod.GET)
-    public ConfPartida insertar(@PathVariable("id") int id) throws Exception {
-	   
-	   return cpDao.buscar(id);
-    	
-    }
-	
-	@GetMapping (value="/listar/{usuario}")
-	   public List<ConfPartida> listar(@PathVariable("usuario") String usuario) throws Exception {
-		   
-		 	ProfesorDao pDao = new JPAProfesorDao();
-		 	
-		 	List<ConfPartida> configuracion = new ArrayList<ConfPartida>();
-		 	try {
-		 		configuracion = cpDao.listar(pDao.buscarId(usuario));
-		 		
-		 	}catch(Exception e) {
-		 		System.err.println(e.toString());
-		 	}
-		 	
-		   /*Hashtable<Integer,String> idNombre = new Hashtable<Integer,String>();
-		   
-		   for (ConfPartida j:configuracion) {
-			   idNombre.put(j.getIdJuego(),j.getNombre());
-		   }*/
-		   
-		   return configuracion;
-	   	
-	   }
-	
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ConfPartida get(@ApiParam(value="Identificador de la configuación de partida", required=true) @PathVariable("id") int id) throws CustomInternalServerErrorException {
+		
+		ConfPartida confp = null;
+
+		try {
+			confp = cpDao.buscar(id);
+
+			if (confp == null) {
+				throw new CustomInternalServerErrorException("No existe la configuración de partida con id: " + id);
+			}
+		} catch (Exception exception) {
+			throw new CustomInternalServerErrorException("Error interno: " + exception.getMessage());
+		}
+
+		return confp;
+
+	}
+
+
+	@ApiOperation(value = "Obtener la lista de configuraciones de partidas de un usuario")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
+	@GetMapping(value = "/listar/{usuario}")
+	public List<ConfPartida> getLista(@ApiParam(value="Email del usuario", required=true) @PathVariable("usuario") String usuario) throws CustomInternalServerErrorException {
+
+		ProfesorDao pDao = new JPAProfesorDao();
+
+		List<ConfPartida> configuracion = new ArrayList<ConfPartida>();
+		try {
+			configuracion = cpDao.listar(pDao.buscarId(usuario));
+
+		} catch (Exception e) {
+			throw new CustomInternalServerErrorException("Error interno");
+		}
+
+		return configuracion;
+
+	}
+
+	@ApiOperation(value = "Insertar una nueva configuración de partida")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@PostMapping
-    public Estado registro(@RequestBody ConfPartida j) throws Exception {
-		
-		System.out.println("Registrar configuracion partida");
-    	
-		j.registrarFecha();
-    	
-    	return new Estado(cpDao.guardar(j));
-    	
-    }
+	public void registro(@ApiParam(value="Configuración de la partida", required=true) @RequestBody ConfPartida j) throws CustomInternalServerErrorException {
+
+		try {
+			//Actualizamos la fecha de registro
+			j.registrarFecha();
+			
+			//Registramos la configuracion de la partida
+			boolean error = cpDao.guardar(j);
+			if(error) {
+				throw new CustomInternalServerErrorException("Error al guardar la partida");
+			}
+		}catch(Exception e) {
+			throw new CustomInternalServerErrorException("Error interno");
+		}
+	}
+
 	
-	@PostMapping ("/modificar")
-    public Estado modificar(@RequestBody ConfPartida j) throws Exception {
+	@ApiOperation(value = "Modificar una configuración de partida existente")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
+	@PutMapping
+	public void modificar(@ApiParam(value="Configuración de la partida", required=true) @RequestBody ConfPartida j) throws CustomInternalServerErrorException {
+
+		boolean error = cpDao.modificar(j);
 		
-    	return new Estado(cpDao.modificar(j));
-    	
-    }
-	
-	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
-    public void eliminarID(@PathVariable("id") int id) throws Exception {
+		if (error) {
+			throw new CustomInternalServerErrorException("Error al modificar la partida");
+		}
 		
-		cpDao.eliminar(id);
-    	
-    }
+	}
+
 	
+	@ApiOperation(value = "Eliminar una configuración de partida existente")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public void eliminarID(@ApiParam(value="Identificador de la configuración de partida") @PathVariable("id") int id) throws CustomInternalServerErrorException {
+
+		boolean error = cpDao.eliminar(id);
+		
+		if (error) {
+			throw new CustomInternalServerErrorException("Error al eliminar la configuración de partida");
+		}
+
+	}
+
+	@ApiOperation(value = "Eliminar un listado de configuraciones de partidas existentes")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@DeleteMapping
-    public Estado eliminarLista(@RequestBody List<Integer> ids) throws Exception {
+	public void eliminarLista(@ApiParam(value="Lista de identificadores") @RequestBody List<Integer> ids) throws CustomInternalServerErrorException {
+
+		boolean error = cpDao.eliminarLista(ids);
 		
-    	
-    	return new Estado(cpDao.eliminarLista(ids));
-    	
-    }
+		if (error) {
+			throw new CustomInternalServerErrorException("Error al eliminar la configuración de partida");
+		}
+	}
 
 }

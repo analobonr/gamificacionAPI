@@ -36,11 +36,21 @@ public class JPAConfPartidasDAO implements ConfPartidasDAO {
 
 	@Override
 	public boolean guardar(ConfPartida cp) {
-		boolean done = true;
+		boolean error = false;
 		
-		System.out.println("Estamos en guardar conf partida");
+		cp.setId_configuracion(null);
+		tx.begin();
+		try {
+			em.persist(cp);
+			tx.commit();
+	
+		}catch(Exception e) {
+			error = true;
+			tx.rollback();
+		}
 		
-		if (cp.getId_configuracion() == -1) {
+		
+		/*if (cp.getId_configuracion() == -1) {
 			String jpql = "select max(cp.id_configuracion) from ConfPartida cp ";
 			Query query = em.createQuery(jpql);
 			List<Integer> lids = query.getResultList();
@@ -78,8 +88,8 @@ public class JPAConfPartidasDAO implements ConfPartidasDAO {
 				done = false;
 			}
 			
-		}
-		return done;
+		}*/
+		return error;
 	}
 
 	@Override
@@ -130,11 +140,7 @@ public class JPAConfPartidasDAO implements ConfPartidasDAO {
 		try {
 			if (cp != null) {
 				tx.begin();
-				em.remove(cp);
-				//String jpql = "delete from configuracion_partidas where id_configuracion="+id;
-				//Query query = em.createNativeQuery(jpql);
-				//query.executeUpdate();
-				
+				em.remove(cp);				
 				tx.commit();
 			}else {
 				

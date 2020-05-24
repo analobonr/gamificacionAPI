@@ -27,7 +27,8 @@ public class SwaggerConfig {
                                     .basePackage("aplicacion"))
                             .paths(PathSelectors.any())
                             .build()
-                            .tags(new Tag("Plantillas", "Recursos para la gestión de Plantillas"),new Tag("Usuarios", "Recursos para la gestión de ususarios"))
+                            .tags(new Tag("Configuración de Partidas", "Recursos para la gestión de Plantillas"),
+                            		new Tag("Usuarios", "Recursos para la gestión de ususarios"))
                             .apiInfo(new ApiInfoBuilder().version("1.0").title("Gamificación API").description("Documentation Gamificación API v1.0").build());
         }
 	
