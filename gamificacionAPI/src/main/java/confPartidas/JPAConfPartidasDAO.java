@@ -95,7 +95,7 @@ public class JPAConfPartidasDAO implements ConfPartidasDAO {
 	@Override
 	public boolean modificar(ConfPartida cp) {
 
-		boolean done = true;
+		boolean error = false;
 		
 		
 		ConfPartida configuracion = em.find(ConfPartida.class, cp.getId_configuracion());
@@ -114,10 +114,10 @@ public class JPAConfPartidasDAO implements ConfPartidasDAO {
 			configuracion.setTitulo(cp.getTitulo());	
 		
 		}else {
-			done = false;
+			error = true;
 		}
 		
-		return done;
+		return error;
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class JPAConfPartidasDAO implements ConfPartidasDAO {
 	@Override
 	public boolean eliminar(int id) {
 
-		boolean done = true;
+		boolean error = false;
 		ConfPartida cp = em.find(ConfPartida.class, id);
 		
 		try {
@@ -144,22 +144,22 @@ public class JPAConfPartidasDAO implements ConfPartidasDAO {
 				tx.commit();
 			}else {
 				
-				done = false;
+				error = true;
 			}
 			
 		}catch(Exception e) {
-			done = false;
+			error = true;
 			tx.rollback();
 			
 		}
 		
 		
-		return done;
+		return error;
 	}
 
 	@Override
 	public boolean eliminarLista(List<Integer> ids) {
-		boolean done = true;
+		boolean error = false;
 		for (int id : ids){
 			
 			tx.begin();
@@ -169,13 +169,13 @@ public class JPAConfPartidasDAO implements ConfPartidasDAO {
 				tx.commit();
 		
 			}catch(Exception e) {
-				done = false;
+				error = true;
 				tx.rollback();
 			}
 			
 			
 		}
-		return done;
+		return error;
 	}
 	
 	
