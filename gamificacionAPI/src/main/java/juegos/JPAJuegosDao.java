@@ -133,7 +133,7 @@ public class JPAJuegosDao implements JuegosDao{
 
 	@Override
 	public boolean eliminar(int id) {
-		boolean done = true;
+		boolean error = false;
 		Juego j = em.find(Juego.class,id);
 		try {
 			if (j != null) {
@@ -142,15 +142,15 @@ public class JPAJuegosDao implements JuegosDao{
 				tx.commit();
 			}else {
 				
-				done = false;
+				error = true;
 			}
 	
 		}catch(Exception e) {
-			done = false;
+			error = true;
 			tx.rollback();
 		}
 		
-		return done;
+		return error;
 	}
 
 	@Override

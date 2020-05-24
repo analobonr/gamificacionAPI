@@ -13,69 +13,104 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import juegos.JPAJuegosDao;
 import juegos.Juego;
 import juegos.JuegosDao;
-
+import utilidades.CustomInternalServerErrorException;
 
 @RestController
 @RequestMapping("/juegos")
 @Api(tags = "Juegos")
 public class JuegosController {
-	
+
 	private JuegosDao jDao = new JPAJuegosDao();
-	
-	@RequestMapping(value="/{id}",method=RequestMethod.GET)
-    public Juego insetar(@PathVariable("id") int id) throws Exception {
-	   
-	   return jDao.buscar(id);
-    	
-    }
-	
+
+	@ApiOperation(value = "Obtener un juego a partir de su identificador")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public Juego get(@ApiParam(value = "Identificador del juego") @PathVariable("id") int id)
+			throws CustomInternalServerErrorException {
+
+		Juego j = jDao.buscar(id);
+
+		if (j == null) {
+			throw new CustomInternalServerErrorException("No existe el juego");
+		}
+
+		return j;
+
+	}
+
+	@ApiOperation(value = "Obtener la lista de juegos existentes")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@GetMapping
-	   public List<Juego> listar() throws Exception {
-		   
-		   
-		   List<Juego> juegos = jDao.listar();
-		   /*Hashtable<Integer,String> idNombre = new Hashtable<Integer,String>();
-		   
-		   for (Juego j:juegos) {
-			   idNombre.put(j.getIdJuego(),j.getNombre());
-		   }*/
-		   
-		   return juegos;
-	   	
-	   }
-	
+	public List<Juego> listar() throws CustomInternalServerErrorException {
+
+		List<Juego> juegos = jDao.listar();
+
+		return juegos;
+
+	}
+
+	@ApiOperation(value = "Insertar un nuevo juego")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@PostMapping
-    public Estado registro(@RequestBody Juego j) throws Exception {
-    	
-		
-    	
-    	return new Estado(jDao.guardar(j));
-    	
-    }
-	
-	@PostMapping ("/modificar")
-    public Estado modificar(@RequestBody Juego j) throws Exception {
-		
-    	
-    	return new Estado(jDao.modificar(j));
-    	
-    }
-	
-	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
-    public void eliminarID(@PathVariable("id") int id) throws Exception {
-    	jDao.eliminar(id);
-    	
-    }
-	
+	public void registro(@ApiParam(value = "Datos del juego") @RequestBody Juego j)
+			throws CustomInternalServerErrorException {
+
+		boolean error = jDao.guardar(j);
+
+		if (error) {
+			throw new CustomInternalServerErrorException("Error al insertar el juego");
+		}
+
+	}
+
+	@ApiOperation(value = "Modificar un juego existente")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
+	@PutMapping
+	public void modificar(@ApiParam(value = "Datos del juego") @RequestBody Juego j)
+			throws CustomInternalServerErrorException {
+
+		boolean error = jDao.modificar(j);
+
+		if (error) {
+			throw new CustomInternalServerErrorException("Error al modificar el juego");
+		}
+
+	}
+
+	@ApiOperation(value = "Eliminar un juego")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public void eliminarID(@ApiParam(value = "Identificador del juego") @PathVariable("id") int id)
+			throws CustomInternalServerErrorException {
+
+		boolean error = jDao.eliminar(id);
+
+		if (error) {
+			throw new CustomInternalServerErrorException("Error al eliminar el juego");
+		}
+
+	}
+
+	@ApiOperation(value = "Eliminar un listado de juegos")
+	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@DeleteMapping
-    public Estado eliminarLista(@RequestBody List<Integer> ids) throws Exception {
-		
-    	
-    	return new Estado(jDao.eliminarLista(ids));
-    	
-    }
+	public void eliminarLista(@ApiParam(value = "Lista de identificadores de juego") @RequestBody List<Integer> ids)
+			throws CustomInternalServerErrorException {
+
+		boolean error = jDao.eliminarLista(ids);
+
+		if (error) {
+			throw new CustomInternalServerErrorException("Error al eliminar la lista de juegos");
+		}
+
+
+	}
 
 }

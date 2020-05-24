@@ -97,9 +97,9 @@ public class JPAProfesorDao implements ProfesorDao{
 
 	@Override
 	public boolean guardar(Profesor p) {
-		boolean done = true;
+		boolean error = false;
 		
-		if (p.getId() == -1) {
+		//if (p.getId() == -1) {
 			Integer id = this.buscarId(p.getEmail());
 			
 			if(id == null) {
@@ -110,23 +110,23 @@ public class JPAProfesorDao implements ProfesorDao{
 						tx.commit();
 				
 				}catch(Exception e) {
-					done = false;
+					error = true;
 					tx.rollback();
 				}
 	
 			}else {
-				done = false;
+				error = true;
 			}
-		}else {
-			done = false;
-		}
+		/*}else {
+			error = true;
+		}*/
 		
-		return done;
+		return error;
 	}
 
 	@Override
 	public boolean modificar(Profesor p) {
-		boolean done = true;
+		boolean error = false;
 		
 		
 		Profesor profesor = em.find(Profesor.class, p.getId());
@@ -141,10 +141,10 @@ public class JPAProfesorDao implements ProfesorDao{
 			tx.commit();
 		
 		}else {
-			done = false;
+			error = true;
 		}
 		
-		return done;
+		return error;
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class JPAProfesorDao implements ProfesorDao{
 
 	@Override
 	public boolean eliminar(Integer id) {
-		boolean done = true;
+		boolean error = false;
 		tx.begin();
 		try {
 			Profesor p = em.find(Profesor.class,id);
@@ -178,11 +178,11 @@ public class JPAProfesorDao implements ProfesorDao{
 			tx.commit();
 	
 		}catch(Exception e) {
-			done = false;
+			error = true;
 			tx.rollback();
 		}
 		
-		return done;
+		return error;
 	}
 
 	@Override
@@ -212,7 +212,7 @@ public class JPAProfesorDao implements ProfesorDao{
 		String jpql = "select p.id from Profesor p where p.email=:email";
 		Query query = em.createQuery(jpql);
 		query.setParameter("email", mail);
-		Integer id = (Integer) query.getSingleResult();;
+		Integer id = (Integer) query.getSingleResult();
 		
 		return id;
 	}
