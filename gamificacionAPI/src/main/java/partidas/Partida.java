@@ -1,6 +1,8 @@
 package partidas;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -12,7 +14,8 @@ import java.util.Calendar;
 public class Partida {
 	
 	@Id
-	private int id_partida;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id_partida;
 	private int id_profesor;
 	private int id_juego;
 	private int id_fpreguntas;
@@ -79,7 +82,7 @@ public class Partida {
 	}
 
 
-	public void setId_partida(int id_partida) {
+	public void setId_partida(Integer id_partida) {
 		this.id_partida = id_partida;
 	}
 

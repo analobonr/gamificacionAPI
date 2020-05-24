@@ -36,13 +36,10 @@ public class JPAPartidasDAO implements PartidasDAO {
 
 	@Override
 	public boolean guardar(Partida p) {
-		boolean done = true;
+		boolean error = false;
 		
-		String jpql = "select max(p.id_partida) from Partida p ";
-		Query query = em.createQuery(jpql);
-		List<Integer> lids = query.getResultList();
-		int lastId = lids.get(lids.size()-1);
-		p.setId_partida(lastId+1);
+
+		p.setId_partida(null);
 		
 		tx.begin();
 		try {
@@ -50,17 +47,17 @@ public class JPAPartidasDAO implements PartidasDAO {
 			tx.commit();
 	
 		}catch(Exception e) {
-			done = false;
+			error = true;
 			tx.rollback();
 		}
 		
-		return done;
+		return error;
 	}
 
 	@Override
 	public boolean modificar(Partida cp) {
 
-		boolean done = true;
+		boolean error = false;
 		
 		
 		Partida configuracion = em.find(Partida.class, cp.getId_partida());
@@ -78,16 +75,16 @@ public class JPAPartidasDAO implements PartidasDAO {
 				tx.commit();
 		
 			}catch(Exception e) {
-				done = false;
+				error = true;
 				tx.rollback();
 			}
 			
 		
 		}else {
-			done = false;
+			error = true;
 		}
 		
-		return done;
+		return error;
 	}
 
 	@Override
@@ -104,7 +101,7 @@ public class JPAPartidasDAO implements PartidasDAO {
 	@Override
 	public boolean eliminar(int id) {
 
-		boolean done = true;
+		boolean error = false;
 		tx.begin();
 		try {
 			Partida cp = em.find(Partida.class,id);
@@ -112,16 +109,16 @@ public class JPAPartidasDAO implements PartidasDAO {
 			tx.commit();
 	
 		}catch(Exception e) {
-			done = false;
+			error = true;
 			tx.rollback();
 		}
 		
-		return done;
+		return error;
 	}
 
 	@Override
 	public boolean eliminarLista(List<Integer> ids) {
-		boolean done = true;
+		boolean error = false;
 		for (int id : ids){
 			
 			tx.begin();
@@ -131,13 +128,13 @@ public class JPAPartidasDAO implements PartidasDAO {
 				tx.commit();
 		
 			}catch(Exception e) {
-				done = false;
+				error = true;
 				tx.rollback();
 			}
 			
 			
 		}
-		return done;
+		return error;
 	}
 	
 	

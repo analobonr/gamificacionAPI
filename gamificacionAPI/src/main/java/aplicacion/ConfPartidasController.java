@@ -44,10 +44,10 @@ public class ConfPartidasController {
 			confp = cpDao.buscar(id);
 
 			if (confp == null) {
-				throw new CustomInternalServerErrorException("No existe la configuración de partida con id: " + id);
+				throw new CustomInternalServerErrorException("No existe la configuración de partida");
 			}
 		} catch (Exception exception) {
-			throw new CustomInternalServerErrorException("Error interno: " + exception.getMessage());
+			throw new CustomInternalServerErrorException("Error interno");
 		}
 
 		return confp;
@@ -77,16 +77,16 @@ public class ConfPartidasController {
 	@ApiOperation(value = "Insertar una nueva configuración de partida")
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@PostMapping
-	public void registro(@ApiParam(value="Configuración de la partida", required=true) @RequestBody ConfPartida j) throws CustomInternalServerErrorException {
+	public void registro(@ApiParam(value="Configuración de la partida", required=true) @RequestBody ConfPartida cp) throws CustomInternalServerErrorException {
 
 		try {
 			//Actualizamos la fecha de registro
-			j.registrarFecha();
+			cp.registrarFecha();
 			
 			//Registramos la configuracion de la partida
-			boolean error = cpDao.guardar(j);
+			boolean error = cpDao.guardar(cp);
 			if(error) {
-				throw new CustomInternalServerErrorException("Error al guardar la partida");
+				throw new CustomInternalServerErrorException("Error al guardar la configuración de partida");
 			}
 		}catch(Exception e) {
 			throw new CustomInternalServerErrorException("Error interno");
@@ -97,12 +97,12 @@ public class ConfPartidasController {
 	@ApiOperation(value = "Modificar una configuración de partida existente")
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@PutMapping
-	public void modificar(@ApiParam(value="Configuración de la partida", required=true) @RequestBody ConfPartida j) throws CustomInternalServerErrorException {
+	public void modificar(@ApiParam(value="Configuración de la partida", required=true) @RequestBody ConfPartida cp) throws CustomInternalServerErrorException {
 
-		boolean error = cpDao.modificar(j);
+		boolean error = cpDao.modificar(cp);
 		
 		if (error) {
-			throw new CustomInternalServerErrorException("Error al modificar la partida");
+			throw new CustomInternalServerErrorException("Error al modificar la configuración de partida");
 		}
 		
 	}
@@ -129,7 +129,7 @@ public class ConfPartidasController {
 		boolean error = cpDao.eliminarLista(ids);
 		
 		if (error) {
-			throw new CustomInternalServerErrorException("Error al eliminar la configuración de partida");
+			throw new CustomInternalServerErrorException("Error al eliminar el listado de configuración de partida");
 		}
 	}
 

@@ -20,6 +20,9 @@ public class SwaggerConfig {
 	@Bean
     public Docket api() {
 			
+				String descripcionAPI = "Documentation Gamificación API v1.0\n"
+										+ "Recursos para la gestión del modelo de datos de la Aplicación de Gestión de Gamificación";
+		
                 return new Docket(DocumentationType.SWAGGER_2)
                             .select()
                             .apis(
@@ -27,9 +30,11 @@ public class SwaggerConfig {
                                     .basePackage("aplicacion"))
                             .paths(PathSelectors.any())
                             .build()
-                            .tags(new Tag("Configuración de Partidas", "Recursos para la gestión de Plantillas"),
-                            		new Tag("Usuarios", "Recursos para la gestión de ususarios"))
-                            .apiInfo(new ApiInfoBuilder().version("1.0").title("Gamificación API").description("Documentation Gamificación API v1.0").build());
+                            .tags(new Tag("Configuración de Partidas", "Recursos para la gestión de Configuraciones de Partidas"),
+                            		new Tag("Partidas", "Recursos para la gestión de partidas"),
+                            		new Tag("Usuarios", "Recursos para la gestión de usuarios"),
+                            		new Tag("Juegos", "Recursos para la gestión de juegos"))
+                            .apiInfo(new ApiInfoBuilder().version("1.0").title("Gamificación API").description(descripcionAPI).build());
         }
 	
 	@Bean
