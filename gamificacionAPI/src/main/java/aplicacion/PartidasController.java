@@ -59,8 +59,8 @@ public class PartidasController {
 	
 	@ApiOperation(value = "Obtener la lista de partidas de un usuario")
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
-	@GetMapping(value="listar/{user}")
-	   public List<Partida> listar(@ApiParam(value="Email del usuario") @PathVariable("user") String user) throws CustomInternalServerErrorException {
+	@GetMapping(value="listar/{usuario}")
+	   public List<Partida> listar(@ApiParam(value="Email del usuario") @PathVariable("usuario") String user) throws CustomInternalServerErrorException {
 		   
 			ProfesorDao pDao = new JPAProfesorDao();
 			

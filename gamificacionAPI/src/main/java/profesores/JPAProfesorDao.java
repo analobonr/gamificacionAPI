@@ -209,10 +209,19 @@ public class JPAProfesorDao implements ProfesorDao{
 	@Override
 	public Integer buscarId(String mail){
 		
-		String jpql = "select p.id from Profesor p where p.email=:email";
-		Query query = em.createQuery(jpql);
-		query.setParameter("email", mail);
-		Integer id = (Integer) query.getSingleResult();
+		Integer id = null;
+		
+		try {
+			
+			String jpql = "select p.id from Profesor p where p.email=:email";
+			Query query = em.createQuery(jpql);
+			query.setParameter("email", mail);
+			id = (Integer) query.getSingleResult();
+		
+		}catch(Exception e) {
+			System.err.println(e);
+		}
+
 		
 		return id;
 	}

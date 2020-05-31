@@ -35,6 +35,8 @@ public class ProfesoresController {
 			@ApiParam(value = "Contraseña") @PathVariable("password") String password)
 			throws CustomInternalServerErrorException {
 
+		System.out.println(login);
+		System.out.println(password);
 		Profesor p = null;
 		Integer id = pDao.buscarId(login);
 
