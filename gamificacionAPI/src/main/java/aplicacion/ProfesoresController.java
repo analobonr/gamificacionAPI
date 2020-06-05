@@ -25,7 +25,7 @@ import utilidades.CustomInternalServerErrorException;
 @Api(tags = "Usuarios")
 public class ProfesoresController {
 
-	ProfesorDao pDao = new JPAProfesorDao();
+	
 
 	@ApiOperation(value = "Obtener el usuario a partir de su correo electronico y contraseña",
 					notes="Devuelve la información del usuario si el usuario y contraseña son correctos")
@@ -35,8 +35,8 @@ public class ProfesoresController {
 			@ApiParam(value = "Contraseña") @PathVariable("password") String password)
 			throws CustomInternalServerErrorException {
 
-		System.out.println(login);
-		System.out.println(password);
+		ProfesorDao pDao = new JPAProfesorDao();
+
 		Profesor p = null;
 		Integer id = pDao.buscarId(login);
 
@@ -59,7 +59,7 @@ public class ProfesoresController {
 	@RequestMapping(value = "/{login}", method = RequestMethod.GET)
 	public Profesor getNuevaPass(@ApiParam(value = "Correo electrónico") @PathVariable("login") String login)
 			throws CustomInternalServerErrorException {
-
+		ProfesorDao pDao = new JPAProfesorDao();
 		Profesor p = null;
 		Integer id = pDao.buscarId(login);
 
@@ -81,7 +81,7 @@ public class ProfesoresController {
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@RequestMapping(value = "/listar", method = RequestMethod.GET)
 	public List<Profesor> listar() throws CustomInternalServerErrorException {
-
+		ProfesorDao pDao = new JPAProfesorDao();
 		return pDao.listar();
 
 	}
@@ -91,7 +91,7 @@ public class ProfesoresController {
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@PostMapping
 	public void registro(@ApiParam(value="Datos del usuario") @RequestBody Profesor p) throws CustomInternalServerErrorException {
-
+		ProfesorDao pDao = new JPAProfesorDao();
 		boolean error = pDao.guardar(p);
 		
 		if(error) {
@@ -104,7 +104,7 @@ public class ProfesoresController {
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@PutMapping
 	public void modificar(@ApiParam(value="Datos del usuario") @RequestBody Profesor p) throws CustomInternalServerErrorException {
-		
+		ProfesorDao pDao = new JPAProfesorDao();
 		boolean error = pDao.modificar(p);
 		
 		if(error) {
@@ -116,7 +116,7 @@ public class ProfesoresController {
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@RequestMapping(value = "/{login}", method = RequestMethod.DELETE)
 	public void eliminarID(@ApiParam(value="Correo electrónico del usuario") @PathVariable("login") String login) throws CustomInternalServerErrorException {
-		
+		ProfesorDao pDao = new JPAProfesorDao();
 		Integer id = pDao.buscarId(login);
 		
 		if (id != null) {
@@ -133,7 +133,7 @@ public class ProfesoresController {
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@RequestMapping(method = RequestMethod.DELETE)
 	public void eliminarLista(@ApiParam(value="Lista de identificadores de usuario") @RequestBody List<Integer> ids) throws CustomInternalServerErrorException {
-		
+		ProfesorDao pDao = new JPAProfesorDao();
 		boolean error = pDao.eliminarLista(ids);
 		
 		if(error) {
