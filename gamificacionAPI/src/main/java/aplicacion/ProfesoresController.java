@@ -134,11 +134,6 @@ public class ProfesoresController {
 	@RequestMapping(method = RequestMethod.DELETE)
 	public void eliminarLista(@ApiParam(value="Lista de identificadores de usuario") @RequestBody List<Integer> ids) throws CustomInternalServerErrorException {
 		ProfesorDao pDao = new JPAProfesorDao();
-		boolean error = pDao.eliminarLista(ids);
-		
-		if(error) {
-			throw new CustomInternalServerErrorException("Error al eliminar la lista de usuarios");
-		}
-
+		pDao.eliminarLista(ids);
 	}
 }

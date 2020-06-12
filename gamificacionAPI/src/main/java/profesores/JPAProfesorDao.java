@@ -186,10 +186,9 @@ public class JPAProfesorDao implements ProfesorDao{
 	}
 
 	@Override
-	public boolean eliminarLista(List<Integer> ids) {
-		boolean done = true;
+	public void eliminarLista(List<Integer> ids) {
+		
 		for (Integer id : ids){
-			
 			tx.begin();
 			try {
 				Profesor p = em.find(Profesor.class,id);
@@ -197,13 +196,9 @@ public class JPAProfesorDao implements ProfesorDao{
 				tx.commit();
 		
 			}catch(Exception e) {
-				done = false;
 				tx.rollback();
 			}
-			
-			
 		}
-		return done;
 	}
 
 	@Override

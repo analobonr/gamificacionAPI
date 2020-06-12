@@ -18,6 +18,6 @@ public interface ProfesorDao {
 	
 	public boolean eliminar(Integer id);
 	
-	public boolean eliminarLista(List<Integer> ids);
+	public void eliminarLista(List<Integer> ids);
 	
 }
