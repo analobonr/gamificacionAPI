@@ -61,7 +61,7 @@ public class JPAJuegosDao implements JuegosDao{
 
 	@Override
 	public boolean modificar(Juego j) {
-		boolean done = true;
+		boolean error = false;
 		
 		
 		tx.begin();
@@ -89,12 +89,12 @@ public class JPAJuegosDao implements JuegosDao{
 		
 			
 		}else {
-			done = false;
+			error = true;
 		}
 		
 		tx.commit();
 		
-		return done;
+		return error;
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public class JPAJuegosDao implements JuegosDao{
 
 	@Override
 	public boolean eliminarLista(List<Integer> ids) {
-		boolean done = true;
+		boolean error = false;
 		for (int id : ids){
 			
 			tx.begin();
@@ -140,13 +140,13 @@ public class JPAJuegosDao implements JuegosDao{
 				tx.commit();
 		
 			}catch(Exception e) {
-				done = false;
+				error = true;
 				tx.rollback();
 			}
 			
 			
 		}
-		return done;
+		return error;
 	}
 
 
