@@ -27,7 +27,7 @@ import utilidades.CustomInternalServerErrorException;
 @Api(tags = "Juegos")
 public class JuegosController {
 
-	private JuegosDao jDao = new JPAJuegosDao();
+	
 
 	@ApiOperation(value = "Obtener un juego a partir de su identificador")
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
@@ -35,6 +35,7 @@ public class JuegosController {
 	public Juego get(@ApiParam(value = "Identificador del juego") @PathVariable("id") int id)
 			throws CustomInternalServerErrorException {
 
+		JuegosDao jDao = new JPAJuegosDao();
 		Juego j = jDao.buscar(id);
 
 		if (j == null) {
@@ -50,6 +51,7 @@ public class JuegosController {
 	@GetMapping
 	public List<Juego> listar() throws CustomInternalServerErrorException {
 
+		JuegosDao jDao = new JPAJuegosDao();
 		List<Juego> juegos = jDao.listar();
 
 		return juegos;
@@ -62,6 +64,7 @@ public class JuegosController {
 	public void registro(@ApiParam(value = "Datos del juego") @RequestBody Juego j)
 			throws CustomInternalServerErrorException {
 
+		JuegosDao jDao = new JPAJuegosDao();
 		boolean error = jDao.guardar(j);
 
 		if (error) {
@@ -75,7 +78,8 @@ public class JuegosController {
 	@PutMapping
 	public void modificar(@ApiParam(value = "Datos del juego") @RequestBody Juego j)
 			throws CustomInternalServerErrorException {
-
+		
+		JuegosDao jDao = new JPAJuegosDao();
 		boolean error = jDao.modificar(j);
 
 		if (error) {
@@ -89,7 +93,8 @@ public class JuegosController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void eliminarID(@ApiParam(value = "Identificador del juego") @PathVariable("id") int id)
 			throws CustomInternalServerErrorException {
-
+		
+		JuegosDao jDao = new JPAJuegosDao();
 		boolean error = jDao.eliminar(id);
 
 		if (error) {
@@ -104,6 +109,7 @@ public class JuegosController {
 	public void eliminarLista(@ApiParam(value = "Lista de identificadores de juego") @RequestBody List<Integer> ids)
 			throws CustomInternalServerErrorException {
 
+		JuegosDao jDao = new JPAJuegosDao();
 		boolean error = jDao.eliminarLista(ids);
 
 		if (error) {

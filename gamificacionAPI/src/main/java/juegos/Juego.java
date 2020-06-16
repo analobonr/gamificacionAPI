@@ -37,9 +37,6 @@ public class Juego {
 	private String nombreZip;
 	private String rutaZip;
 	
-	public int getIdJuego() {
-		return id_juego;
-	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -74,9 +71,7 @@ public class Juego {
 	public boolean isCargaCompleta() {
 		return cargaCompleta;
 	}
-	public void setIdJuego(int idJuego) {
-		this.id_juego = idJuego;
-	}
+
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}

@@ -37,51 +37,26 @@ public class JPAJuegosDao implements JuegosDao{
 
 	@Override
 	public boolean guardar(Juego j) {
-		boolean done = true;
-		Juego juego = null;
-		System.out.println(j.getIdJuego());
+		boolean error = false;
 		
-		if (j.getIdJuego() == -1) {
-			String jpql = "select max(j.id_juego) from Juego j ";
-			Query query = em.createQuery(jpql);
-			List<Integer> lids = query.getResultList();
-			int lastId = lids.get(lids.size()-1);
-			j.setIdJuego(lastId+1);
-			
-			
-			tx.begin();
-			try {
-				em.persist(j);
-				tx.commit();
+		String jpql = "select max(j.id_juego) from Juego j ";
+		Query query = em.createQuery(jpql);
+		List<Integer> lids = query.getResultList();
+		int lastId = lids.get(lids.size()-1);
+		j.setId_juego(lastId+1);
 		
-			}catch(Exception e) {
-				done = false;
-				tx.rollback();
-			}
-			
-		}else {
 		
-			juego = em.find(Juego.class, j.getIdJuego());
-			if(juego == null) {
-				tx.begin();
-				try {
-					em.persist(j);
-					tx.commit();
-			
-				}catch(Exception e) {
-					done = false;
-					tx.rollback();
-				}
+		tx.begin();
+		try {
+			em.persist(j);
+			tx.commit();
 	
-			}else {
-				done = false;
-			}
+		}catch(Exception e) {
+			error = true;
+			tx.rollback();
 		}
-		
-		
-		
-		
-		return done;
+
+		return error;
 	}
 
 	@Override
@@ -90,7 +65,7 @@ public class JPAJuegosDao implements JuegosDao{
 		
 		
 		tx.begin();
-		Juego juego = em.find(Juego.class, j.getIdJuego());
+		Juego juego = em.find(Juego.class, j.getId_juego());
 		
 		if(juego != null) {
 			
