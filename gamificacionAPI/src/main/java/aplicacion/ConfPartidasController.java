@@ -30,14 +30,14 @@ import utilidades.CustomInternalServerErrorException;
 @Api(tags = "Configuración de Partidas")
 public class ConfPartidasController {
 
-	private ConfPartidasDAO cpDao = new JPAConfPartidasDAO();
-
 
 	@ApiOperation(value = "Obtener una configuración de partida a partir de su identificador")
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ConfPartida get(@ApiParam(value="Identificador de la configuación de partida", required=true) @PathVariable("id") int id) throws CustomInternalServerErrorException {
 		
+		
+		ConfPartidasDAO cpDao = new JPAConfPartidasDAO();
 		ConfPartida confp = null;
 
 		try {
@@ -60,6 +60,7 @@ public class ConfPartidasController {
 	@GetMapping(value = "/listar/{usuario}")
 	public List<ConfPartida> getLista(@ApiParam(value="Email del usuario", required=true) @PathVariable("usuario") String usuario) throws CustomInternalServerErrorException {
 
+		ConfPartidasDAO cpDao = new JPAConfPartidasDAO();
 		ProfesorDao pDao = new JPAProfesorDao();
 
 		List<ConfPartida> configuracion = new ArrayList<ConfPartida>();
@@ -79,6 +80,7 @@ public class ConfPartidasController {
 	@PostMapping
 	public void registro(@ApiParam(value="Configuración de la partida", required=true) @RequestBody ConfPartida cp) throws CustomInternalServerErrorException {
 
+		ConfPartidasDAO cpDao = new JPAConfPartidasDAO();
 		try {
 			//Actualizamos la fecha de registro
 			cp.registrarFecha();
@@ -99,6 +101,7 @@ public class ConfPartidasController {
 	@PutMapping
 	public void modificar(@ApiParam(value="Configuración de la partida", required=true) @RequestBody ConfPartida cp) throws CustomInternalServerErrorException {
 
+		ConfPartidasDAO cpDao = new JPAConfPartidasDAO();
 		boolean error = cpDao.modificar(cp);
 		
 		if (error) {
@@ -113,6 +116,7 @@ public class ConfPartidasController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void eliminarID(@ApiParam(value="Identificador de la configuración de partida") @PathVariable("id") int id) throws CustomInternalServerErrorException {
 
+		ConfPartidasDAO cpDao = new JPAConfPartidasDAO();
 		boolean error = cpDao.eliminar(id);
 		
 		if (error) {
@@ -125,7 +129,8 @@ public class ConfPartidasController {
 	@ApiResponses(value = { @ApiResponse(code = 500, message = "Internal Server Error") })
 	@DeleteMapping
 	public void eliminarLista(@ApiParam(value="Lista de identificadores") @RequestBody List<Integer> ids) throws CustomInternalServerErrorException {
-
+		
+		ConfPartidasDAO cpDao = new JPAConfPartidasDAO();
 		boolean error = cpDao.eliminarLista(ids);
 		
 		if (error) {
