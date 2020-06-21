@@ -97,7 +97,7 @@ public class JPAConfPartidasDAO implements ConfPartidasDAO {
 
 		boolean error = false;
 		
-		
+		tx.begin();
 		ConfPartida configuracion = em.find(ConfPartida.class, cp.getId_configuracion());
 		
 		if(configuracion != null) {
@@ -112,6 +112,15 @@ public class JPAConfPartidasDAO implements ConfPartidasDAO {
 			configuracion.setPorcentaje_correccion(cp.getPorcentaje_correccion());
 			configuracion.setTema(cp.getTema());
 			configuracion.setTitulo(cp.getTitulo());	
+			
+			try {
+				
+				tx.commit();
+			}catch(Exception e) {
+				e.printStackTrace();
+				error = true;
+			}
+			
 		
 		}else {
 			error = true;
