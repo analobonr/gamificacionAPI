@@ -1,27 +1,14 @@
 package profesores;
 
-
-
-import java.util.Calendar;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import utilidades.CustomerDateAndTimeDeserialize;
 
 @Entity
 @Table(name="profesores" )
@@ -43,12 +30,8 @@ public class Profesor{
 	
 	private String pais;
 	
-	//@JsonDeserialize(using= CustomerDateAndTimeDeserialize.class)
-	//@Temporal(TemporalType.TIMESTAMP)
 	private Date fecha_registro;
 	
-	//@JsonDeserialize(using= CustomerDateAndTimeDeserialize.class)
-	//@Temporal(TemporalType.TIMESTAMP)
 	private Date f_ultimo_acceso;
 	
 	
